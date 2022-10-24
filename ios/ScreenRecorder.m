@@ -138,9 +138,9 @@ RCT_REMAP_METHOD(startRecording, config:(NSDictionary *)config resolve:(RCTPromi
             completionHandler: ^(NSError* error) {
                 NSLog(@"ScreenRecorder: startCapture completionHandler %@", error);
                 if (error) {
-                    resolve(@"userDeniedPermission");
+                    reject(0, @"userDeniedPermission", nil);
                 } else {
-                    resolve(@"started");
+                    resolve(self.writer.outputURL.absoluteString);
                 }
             }
 

@@ -87,6 +87,7 @@ public class ScreenRecorderModule extends ReactContextBaseJavaModule implements 
     try{ // Requesting user permissions
       MediaProjectionManager mediaProjectionManager = (MediaProjectionManager) reactContext.getSystemService (Context.MEDIA_PROJECTION_SERVICE);
       getCurrentActivity().startActivityForResult(mediaProjectionManager.createScreenCaptureIntent(), SCREEN_RECORD_REQUEST_CODE);
+      if (startPromise != null)  startPromise.resolve(outputUri.toString());
     } catch (Exception e) {
       startPromise.reject("404",e.getMessage());
     }
