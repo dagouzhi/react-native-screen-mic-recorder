@@ -87,7 +87,6 @@ public class ScreenRecorderModule extends ReactContextBaseJavaModule implements 
     try{ // Requesting user permissions
       MediaProjectionManager mediaProjectionManager = (MediaProjectionManager) reactContext.getSystemService (Context.MEDIA_PROJECTION_SERVICE);
       getCurrentActivity().startActivityForResult(mediaProjectionManager.createScreenCaptureIntent(), SCREEN_RECORD_REQUEST_CODE);
-      if (startPromise != null)  startPromise.resolve(outputUri.toString());
     } catch (Exception e) {
       startPromise.reject("404",e.getMessage());
     }
@@ -115,8 +114,13 @@ public class ScreenRecorderModule extends ReactContextBaseJavaModule implements 
   // HB Recorder Events
   @Override
   public void HBRecorderOnStart() {
-    Log.d("ScreenRecorder","HBRecorder Started ");
-    startPromise.resolve("started");
+    try{ // Requesting user permissions
+      Log.d("ScreenRecorder","HBRecorder Started ");
+      String uri = hbRecorder.getFilePath();
+      if (startPromise != null)  startPromise.resolve(uri);
+    } catch (Exception e) {
+      startPromise.reject("404",e.getMessage());
+    }
   }
 
   @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
